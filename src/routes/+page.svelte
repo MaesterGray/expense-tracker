@@ -14,8 +14,6 @@ import { db } from '$lib/firebase';
 
 
     const addItem = async (e) => {
-        console.log('I ran')
-    e.preventDefault();
     if (newItem.name !== '' && newItem.price !== '') {
      items=[...items, newItem]
       await addDoc(collection(db, 'items'), {
