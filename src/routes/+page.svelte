@@ -2,8 +2,6 @@
     import {
   collection,
   addDoc,
-  getDoc,
-  QuerySnapshot,
   query,
   onSnapshot,
   deleteDoc,
@@ -28,9 +26,8 @@ import { db } from '$lib/firebase';
     }
   };
 
-  $effect(() => {
   const q = query(collection(db, 'items'));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+   onSnapshot(q, (querySnapshot) => {
     let itemsArr = [];
 
     querySnapshot.forEach((doc) => {
@@ -48,8 +45,6 @@ import { db } from '$lib/firebase';
     calculateTotal();
   });
 
-  return () => unsubscribe();
-});
 
   const deleteItem = async (id) => {
     await deleteDoc(doc(db, 'items', id));
@@ -92,7 +87,7 @@ import { db } from '$lib/firebase';
             </div>
             <button
               onclick={() => deleteItem(item.id)}
-              class='ml-8 p-4 border-l-2 border-slate-900 hover:bg-slate-900 w-16'
+              class='ml-8 p-4 border-l-2 border-slate-900 hover:bg-slate-900 w-16 text-white'
             >
               X
             </button>
