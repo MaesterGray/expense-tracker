@@ -24,25 +24,23 @@ import { db } from '$lib/firebase';
     }
   };
 
-  const q = query(collection(db, 'items'));
-   onSnapshot(q, (querySnapshot) => {
-    let itemsArr = [];
+  const q = query(collection(db, 'items'))
+  onSnapshot(q,(querysnapshot)=>{
+    let itemsArr = []
+    querysnapshot.forEach((doc)=>{
+      itemsArr.push({...doc.data(),id:doc.id})
+    })
+    items = itemsArr
+    const calculateTotal = ()=>{
+      let totalPrice = 0
+      itemsArr.forEach((item)=>{
+        totalPrice+= item.price
+      })
 
-    querySnapshot.forEach((doc) => {
-      itemsArr.push({ ...doc.data(), id: doc.id });
-    });
-    items = itemsArr;
-
-    const calculateTotal = () => {
-      const totalPrice = itemsArr.reduce(
-        (sum, item) => sum + parseFloat(item.price),
-        0
-      );
-      total = totalPrice;
-    };
-    calculateTotal();
-  });
-
+      total = totalPrice
+    }
+    calculateTotal()
+  })
 
   const deleteItem = async (id) => {
     await deleteDoc(doc(db, 'items', id));
